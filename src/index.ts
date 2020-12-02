@@ -19,7 +19,7 @@ type Props<Data, Error> = {
  *
  * This helps you revalidate your SWR calls, based on navigation actions in `react-navigation`.
  */
-export default function useSWRReactNavigation<Data = any, Error = any>(
+export function useSWRNative<Data = any, Error = any>(
   props: Props<Data, Error>
 ) {
   const {
