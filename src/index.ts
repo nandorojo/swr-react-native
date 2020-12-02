@@ -1,4 +1,4 @@
-import { responseInterface, ConfigInterface } from 'swr'
+import useSWR, { responseInterface, ConfigInterface, keyInterface } from 'swr'
 import { useRef, useEffect } from 'react'
 import { AppState, Platform } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
@@ -19,7 +19,7 @@ type Props<Data, Error> = {
  *
  * This helps you revalidate your SWR calls, based on navigation actions in `react-navigation`.
  */
-export function useSWRNative<Data = any, Error = any>(
+export function useSWRNativeRevalidate<Data = any, Error = any>(
   props: Props<Data, Error>
 ) {
   const {
@@ -112,4 +112,23 @@ export function useSWRNative<Data = any, Error = any>(
     revalidateOnFocus,
     revalidateOnReconnect,
   ])
+}
+
+type fetcherFn<Data> = ((...args: any) => Data | Promise<Data>) | null
+
+export default function useSWRNative<Data = any, Error = any>(
+  key: keyInterface,
+  fn: fetcherFn<Data>,
+  config?: ConfigInterface<Data, Error>
+) {
+  const swr = useSWR(key, fn, config)
+
+  useSWRNativeRevalidate({
+    revalidate: swr.revalidate,
+    revalidateOnFocus: config?.revalidateOnFocus,
+    revalidateOnReconnect: config?.revalidateOnReconnect,
+    focusThrottleInterval: config?.focusThrottleInterval,
+  })
+
+  return swr
 }
