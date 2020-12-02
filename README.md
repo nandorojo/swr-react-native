@@ -1,13 +1,15 @@
 # SWR + React Native 🐮
 
-Add React Native/React Navigation compatibility to [`swr`](https://swr.vercel.app). 👨🏻‍🔧
+Add React Native + React Navigation compatibility to [`swr`](https://swr.vercel.app). 👨🏻‍🔧
 
 ```diff
 - import useSWR from 'swr'
 + import useSWRNative from '@nandorojo/swr-react-native'
 ```
 
-That's all. SWR revalidation now works in your React Native app. Requests also revalidate when your React Navigation screens focus.
+**That's it.**
+
+SWR revalidation now works in your React Native app. Requests also revalidate when your React Navigation screens focus.
 
 ## Why?
 
