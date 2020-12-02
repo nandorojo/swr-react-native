@@ -61,6 +61,8 @@ const { data, mutate, error } = useSWRNative(key, fetcher, config)
 
 If, for some reason, you don't want to replace your imports, you can use the `useSWRNativeRevalidate` hook.
 
+This option exists in case `useSWR` makes some big changes to their API or something down the line.
+
 ```ts
 import { useSWRNativeRevalidate } from '@nandorojo/swr-react-native'
 ```
