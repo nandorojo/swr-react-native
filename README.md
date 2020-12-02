@@ -1,34 +1,33 @@
 # SWR + React Native 🐮
 
-Make SWR fit well into your React Native/React Navigation app.
+Add React Native/React Navigation compatibility to [`swr`](https://swr.vercel.app). 👨🏻‍🔧
 
-```js
-const { data, revalidate } = useSWR(key, fetcher);
-
-useSWRNative({
-  revalidate,
-});
+```diff
+- import useSWR from 'swr'
++ import useSWRNative from '@nandorojo/swr-react-native'
 ```
 
-That's all.
+That's all. SWR revalidation now works in your React Native app. Requests also revalidate when your React Navigation screens focus.
 
-# Why?
+## Why?
 
 `swr` is an awesome data fetching + caching library by Vercel.
 
 However, some of its essential features, such as `revalidateOnFocus` &amp; `revalidateOnConnect`, don't work on React Native.
 
-This library provides a simple hook to add SWR compatibility for **React Native** / **React Navigation**.
+This library provides a simple drop-in replacement for `useSWR`, which adds compatibility for **React Native** / **React Navigation**.
 
-# Features
+It comes with 2 hooks: `useSWRNative`, and `useSWRNativeRevalidate`.
+
+## Features
 
 - Adds support for `revalidateOnConnect` &amp; `revalidateOnFocus`.
 - Configurable `focusEventThrottle`
 - Web, iOS and Android compatibility.
-- Zero config necessary.
+- Zero config
 - Works with **React Navigation**
 
-# Installation
+## Installation
 
 ```
 yarn add @nandorojo/swr-react-native
@@ -46,13 +45,29 @@ expo install @react-native-community/netinfo
 yarn add @react-native-community/netinfo
 ```
 
-# Usage
+## Usage
+
+There are 2 ways to use this library:
+
+## 1. Simplest usage
+
+Replace imports of `useSWR` with `useSWRNative`. That's it!
 
 ```ts
-import { useSWRNative } from '@nandorojo/swr-firestore';
+import useSWRNative from '@nandorojo/swr-react-native'
+
+const { data, mutate, error } = useSWRNative(key, fetcher, config)
 ```
 
-Then, in your component, call `useSWRNative`, likely below your `useSWR` function:
+## 2. Custom usage
+
+If, for some reason, you don't want to replace your imports, you can use the `useSWRNativeRevalidate` hook.
+
+```ts
+import { useSWRNativeRevalidate } from '@nandorojo/swr-react-native'
+```
+
+Call `useSWRNativeRevalidate`, likely below your `useSWR` function:
 
 ```ts
 const { data, revalidate } = useSWR(key, fetcher)
@@ -67,3 +82,13 @@ useSWRNative({
   focusThrottleInterval: 5000,
 })
 ```
+
+The `revalidate` function is required!
+
+# Context
+
+The idea for this library originated from [this issue](https://github.com/vercel/swr/issues/417).
+
+I'm a big fan of SWR. I've also built a fetching library for Firebase/Firestore based on swr, which you can find [here](https://github.com/nandorojo/swr-firestore).
+
+It's still pretty new, and isn't super battle tested, so I'd appreciate help testing it.
