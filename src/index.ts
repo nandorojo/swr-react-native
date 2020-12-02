@@ -2,7 +2,8 @@ import useSWR, { responseInterface, ConfigInterface, keyInterface } from 'swr'
 import { useRef, useEffect } from 'react'
 import { AppState, Platform } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
-import NetInfo, { NetInfoState } from '@react-native-community/netinfo'
+import type NetInfo from '@react-native-community/netinfo'
+import type { NetInfoState } from '@react-native-community/netinfo'
 
 type Props<Data, Error> = {
   /**
@@ -37,7 +38,13 @@ export function useSWRNativeRevalidate<Data = any, Error = any>(
   useEffect(() => {
     fetchRef.current = revalidate
   })
-  const focusCount = useRef(0)
+  const focusCount = useRef(
+    Platform.select({
+      // react-navigation fire a focus event on the initial mount, but not on web
+      web: 1,
+      default: 0,
+    })
+  )
 
   const previousAppState = useRef(AppState.currentState)
   const previousNetworkState = useRef<NetInfoState | null>(null)
@@ -47,9 +54,11 @@ export function useSWRNativeRevalidate<Data = any, Error = any>(
       typeof NetInfo.addEventListener
     > | null = null
     if (revalidateOnReconnect && Platform.OS !== 'web') {
-      // SWR does all of this on web.
-      // we still might want it for focusing, however, for stack navigation on web, so leave it there.
-      unsubscribeReconnect = NetInfo.addEventListener(state => {
+      // inline require to avoid breaking SSR when window doesn't exist
+      const Network: typeof NetInfo = require('@react-native-community/netinfo')
+        .default
+      // SWR does all of this on web. 
+      unsubscribeReconnect = Network.addEventListener(state => {
         if (
           previousNetworkState.current?.isInternetReachable === false &&
           state.isConnected &&
