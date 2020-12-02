@@ -25,10 +25,10 @@ It comes with 2 hooks: `useSWRNative`, and `useSWRNativeRevalidate`.
 
 - Adds support for `revalidateOnConnect` &amp; `revalidateOnFocus`.
 - Configurable `focusEventThrottle`
-- Web, iOS and Android compatibility.
+- Web, iOS and Android support
 - Zero config
 - Revalidates when `AppState` becomes `active`
-- Works with **React Navigation**
+- Works with **React Navigation**, revalidating on screen `focus`
 
 ## Installation
 
