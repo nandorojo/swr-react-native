@@ -29,6 +29,7 @@ It comes with 2 hooks: `useSWRNative`, and `useSWRNativeRevalidate`.
 - Zero config
 - Revalidates when `AppState` becomes `active`
 - Works with **React Navigation**, revalidating on screen `focus`
+- TypeScript support
 
 ## Installation
 
