@@ -76,7 +76,7 @@ Call `useSWRNativeRevalidate`, likely below your `useSWR` function:
 ```ts
 const { data, revalidate } = useSWR(key, fetcher)
 
-useSWRNative({
+useSWRNativeRevalidate({
   // required: pass your revalidate function returned by SWR
   revalidate
 
@@ -91,8 +91,6 @@ The `revalidate` function is required!
 
 # Context
 
-The idea for this library originated from [this issue](https://github.com/vercel/swr/issues/417).
-
 I'm a big fan of SWR. I've also built a fetching library for Firebase/Firestore based on swr, which you can find [here](https://github.com/nandorojo/swr-firestore).
 
-It's still pretty new, and isn't super battle tested, so I'd appreciate help testing it.
+The idea for this library originated from [this issue](https://github.com/vercel/swr/issues/417). Thanks to [@te-online](https://github.com/te-online) for help testing it.
