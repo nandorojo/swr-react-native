@@ -31,8 +31,6 @@ It comes with 2 hooks: `useSWRNative`, and `useSWRNativeRevalidate`.
 
 ```sh
 yarn add @nandorojo/swr-react-native
-
-# or npm i @nandorojo/swr-react-native
 ```
 
 Next, install peer dependencies:
