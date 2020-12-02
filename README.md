@@ -47,7 +47,7 @@ yarn add @react-native-community/netinfo
 
 There are 2 ways to use this library:
 
-## 1. Simplest usage
+### 1. Simplest usage
 
 Replace imports of `useSWR` with `useSWRNative`. That's it!
 
@@ -57,7 +57,7 @@ import useSWRNative from '@nandorojo/swr-react-native'
 const { data, mutate, error } = useSWRNative(key, fetcher, config)
 ```
 
-## 2. Custom usage
+### 2. Custom usage
 
 If, for some reason, you don't want to replace your imports, you can use the `useSWRNativeRevalidate` hook.
 
