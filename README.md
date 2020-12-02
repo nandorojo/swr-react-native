@@ -27,6 +27,7 @@ It comes with 2 hooks: `useSWRNative`, and `useSWRNativeRevalidate`.
 - Configurable `focusEventThrottle`
 - Web, iOS and Android compatibility.
 - Zero config
+- Revalidates when `AppState` becomes `active`
 - Works with **React Navigation**
 
 ## Installation
