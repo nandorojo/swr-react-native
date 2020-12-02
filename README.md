@@ -62,9 +62,9 @@ const { data, mutate, error } = useSWRNative(key, fetcher, config)
 
 ### 2. Custom usage
 
-If, for some reason, you don't want to replace your imports, you can use the `useSWRNativeRevalidate` hook.
+If, for some reason, you don't want to replace your imports, you can use the `useSWRNativeRevalidate` hook. This allows you to de-couple the revalidation from the `useSWR` hook itself.
 
-This option exists in case `useSWR` makes some big changes to their API or something down the line.
+This option exists in case `useSWR` makes some big changes to their API or something down the line. Or, maybe you're using React Native web, and not all screens are nested in a React Navigation stack, so you want to call this only in those places.
 
 ```ts
 import { useSWRNativeRevalidate } from '@nandorojo/swr-react-native'
