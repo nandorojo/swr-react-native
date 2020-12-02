@@ -29,7 +29,7 @@ It comes with 2 hooks: `useSWRNative`, and `useSWRNativeRevalidate`.
 
 ## Installation
 
-```
+```sh
 yarn add @nandorojo/swr-react-native
 
 # or npm i @nandorojo/swr-react-native
@@ -37,7 +37,7 @@ yarn add @nandorojo/swr-react-native
 
 Next, install peer dependencies:
 
-```
+```sh
 # if you're using expo
 expo install @react-native-community/netinfo
 
