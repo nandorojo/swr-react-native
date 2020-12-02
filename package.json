@@ -30,6 +30,9 @@
   "name": "swr-react-native",
   "author": "Fernando Rojo",
   "module": "dist/swr-react-native.esm.js",
+  "repository": {
+    "url": "https://github.com/nandorojo/swr-react-native"
+  },
   "size-limit": [
     {
       "path": "dist/swr-react-native.cjs.production.min.js",
