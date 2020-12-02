@@ -1,13 +1,15 @@
 # SWR + React Native 🐮
 
-Add React Native/React Navigation compatibility to [`swr`](https://swr.vercel.app). 👨🏻‍🔧
+Add React Native + React Navigation compatibility to [`swr`](https://swr.vercel.app). 👨🏻‍🔧
 
 ```diff
 - import useSWR from 'swr'
 + import useSWRNative from '@nandorojo/swr-react-native'
 ```
 
-That's all. SWR revalidation now works in your React Native app. Requests also revalidate when your React Navigation screens focus.
+**That's it.**
+
+SWR revalidation now works in your React Native app. Requests also revalidate when your React Navigation screens focus.
 
 ## Why?
 
@@ -23,9 +25,11 @@ It comes with 2 hooks: `useSWRNative`, and `useSWRNativeRevalidate`.
 
 - Adds support for `revalidateOnConnect` &amp; `revalidateOnFocus`.
 - Configurable `focusEventThrottle`
-- Web, iOS and Android compatibility.
+- Web, iOS and Android support
 - Zero config
-- Works with **React Navigation**
+- Revalidates when `AppState` becomes `active`
+- Works with **React Navigation**, revalidating on screen `focus`
+- TypeScript support
 
 ## Installation
 
@@ -59,9 +63,9 @@ const { data, mutate, error } = useSWRNative(key, fetcher, config)
 
 ### 2. Custom usage
 
-If, for some reason, you don't want to replace your imports, you can use the `useSWRNativeRevalidate` hook.
+If, for some reason, you don't want to replace your imports, you can use the `useSWRNativeRevalidate` hook. This allows you to de-couple the revalidation from the `useSWR` hook itself.
 
-This option exists in case `useSWR` makes some big changes to their API or something down the line.
+This option exists in case `useSWR` makes some big changes to their API or something down the line. Or, maybe you're using React Native web, and not all screens are nested in a React Navigation stack, so you want to call this only in those places.
 
 ```ts
 import { useSWRNativeRevalidate } from '@nandorojo/swr-react-native'
