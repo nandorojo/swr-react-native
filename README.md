@@ -30,6 +30,7 @@ It comes with 2 hooks: `useSWRNative`, and `useSWRNativeRevalidate`.
 - Revalidates when `AppState` becomes `active`
 - Works with **React Navigation**, revalidating on screen `focus`
 - TypeScript support
+- `useSWRInfinite` support
 
 ## Installation
 
@@ -88,6 +89,17 @@ useSWRNativeRevalidate({
 ```
 
 The `revalidate` function is required!
+
+If you're using `useSWRInfinite`, this you should rely on this usage:
+
+```ts
+const { data, revalidate } = useSWRInfinite(...)
+
+useSWRNativeRevalidate({
+  // required: pass your revalidate function returned by SWR
+  revalidate
+})
+```
 
 # Context
 
