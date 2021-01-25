@@ -68,6 +68,8 @@ If, for some reason, you don't want to replace your imports, you can use the `us
 
 This option exists in case `useSWR` makes some big changes to their API or something down the line. Or, maybe you're using React Native web, and not all screens are nested in a React Navigation stack, so you want to call this only in those places.
 
+If you're using `useSWRInfinite`, then this is the method for you.
+
 ```ts
 import { useSWRNativeRevalidate } from '@nandorojo/swr-react-native'
 ```
