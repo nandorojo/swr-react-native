@@ -27,7 +27,7 @@
       "pre-commit": "tsdx lint"
     }
   },
-  "name": "swr-react-native",
+  "name": "@nandorojo/swr-react-native",
   "author": "Fernando Rojo",
   "module": "dist/swr-react-native.esm.js",
   "repository": {
