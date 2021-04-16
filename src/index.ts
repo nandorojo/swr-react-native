@@ -1,17 +1,17 @@
-import useSWR, { responseInterface, ConfigInterface, keyInterface } from 'swr'
-import { useRef, useEffect } from 'react'
-import { AppState, Platform } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
 import type NetInfo from '@react-native-community/netinfo'
 import type { NetInfoState } from '@react-native-community/netinfo'
+import { useNavigation } from '@react-navigation/native'
+import { useEffect, useRef } from 'react'
+import { AppState, Platform } from 'react-native'
+import useSWR, { Key, SWRConfiguration, SWRResponse } from 'swr'
 
 type Props<Data, Error> = {
   /**
    * Required: pass the `revalidate` function returned to you by SWR.
    */
-  revalidate: responseInterface<Data | null, Error>['revalidate']
+  revalidate: SWRResponse<Data | null, Error>['revalidate']
 } & Pick<
-  ConfigInterface,
+  SWRConfiguration,
   'revalidateOnFocus' | 'revalidateOnReconnect' | 'focusThrottleInterval'
 >
 
@@ -57,8 +57,8 @@ export function useSWRNativeRevalidate<Data = any, Error = any>(
       // inline require to avoid breaking SSR when window doesn't exist
       const Network: typeof NetInfo = require('@react-native-community/netinfo')
         .default
-      // SWR does all of this on web. 
-      unsubscribeReconnect = Network.addEventListener(state => {
+      // SWR does all of this on web.
+      unsubscribeReconnect = Network.addEventListener((state) => {
         if (
           previousNetworkState.current?.isInternetReachable === false &&
           state.isConnected &&
@@ -126,9 +126,9 @@ export function useSWRNativeRevalidate<Data = any, Error = any>(
 type fetcherFn<Data> = ((...args: any) => Data | Promise<Data>) | null
 
 export default function useSWRNative<Data = any, Error = any>(
-  key: keyInterface,
+  key: Key,
   fn: fetcherFn<Data>,
-  config?: ConfigInterface<Data, Error>
+  config?: SWRConfiguration<Data, Error>
 ) {
   const swr = useSWR(key, fn, config)
 
