@@ -127,7 +127,7 @@ type fetcherFn<Data> = ((...args: any) => Data | Promise<Data>) | null
 
 export default function useSWRNative<Data = any, Error = any>(
   key: keyInterface,
-  fn: fetcherFn<Data>,
+  fn?: fetcherFn<Data>,
   config?: ConfigInterface<Data, Error>
 ) {
   const swr = useSWR(key, fn, config)
