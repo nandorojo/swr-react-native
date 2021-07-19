@@ -1,4 +1,4 @@
-import useSWR, { responseInterface, ConfigInterface, keyInterface } from 'swr'
+import useSWR, { SWRResponse, SWRConfiguration, Key } from 'swr'
 import { useRef, useEffect } from 'react'
 import { AppState, Platform } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
@@ -9,9 +9,9 @@ type Props<Data, Error> = {
   /**
    * Required: pass the `revalidate` function returned to you by SWR.
    */
-  revalidate: responseInterface<Data | null, Error>['revalidate']
+  mutate: SWRResponse<Data, Error>['mutate']
 } & Pick<
-  ConfigInterface,
+  SWRConfiguration,
   'revalidateOnFocus' | 'revalidateOnReconnect' | 'focusThrottleInterval'
 >
 
@@ -24,7 +24,7 @@ export function useSWRNativeRevalidate<Data = any, Error = any>(
   props: Props<Data, Error>
 ) {
   const {
-    revalidate,
+    mutate,
     // copy defaults from SWR
     revalidateOnFocus = true,
     revalidateOnReconnect = true,
@@ -34,9 +34,9 @@ export function useSWRNativeRevalidate<Data = any, Error = any>(
   const { addListener } = useNavigation()
 
   const lastFocusedAt = useRef<number | null>(null)
-  const fetchRef = useRef(revalidate)
+  const fetchRef = useRef(mutate)
   useEffect(() => {
-    fetchRef.current = revalidate
+    fetchRef.current = mutate
   })
   const focusCount = useRef(
     Platform.select({
@@ -57,8 +57,8 @@ export function useSWRNativeRevalidate<Data = any, Error = any>(
       // inline require to avoid breaking SSR when window doesn't exist
       const Network: typeof NetInfo = require('@react-native-community/netinfo')
         .default
-      // SWR does all of this on web. 
-      unsubscribeReconnect = Network.addEventListener(state => {
+      // SWR does all of this on web.
+      unsubscribeReconnect = Network.addEventListener((state) => {
         if (
           previousNetworkState.current?.isInternetReachable === false &&
           state.isConnected &&
@@ -123,17 +123,17 @@ export function useSWRNativeRevalidate<Data = any, Error = any>(
   ])
 }
 
-type fetcherFn<Data> = ((...args: any) => Data | Promise<Data>) | null
+type Fetcher<Data> = ((...args: any) => Data | Promise<Data>) | null
 
 export default function useSWRNative<Data = any, Error = any>(
-  key: keyInterface,
-  fn: fetcherFn<Data>,
-  config?: ConfigInterface<Data, Error>
+  key: Key,
+  fn: Fetcher<Data>,
+  config?: SWRConfiguration<Data, Error>
 ) {
   const swr = useSWR(key, fn, config)
 
   useSWRNativeRevalidate({
-    revalidate: swr.revalidate,
+    mutate: swr.mutate,
     revalidateOnFocus: config?.revalidateOnFocus,
     revalidateOnReconnect: config?.revalidateOnReconnect,
     focusThrottleInterval: config?.focusThrottleInterval,
