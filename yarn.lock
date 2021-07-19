@@ -8396,10 +8396,10 @@ svgo@^1.0.0:
     unquote "~1.1.1"
     util.promisify "~1.0.0"
 
-swr@^0.3.9:
-  version "0.3.9"
-  resolved "https://registry.yarnpkg.com/swr/-/swr-0.3.9.tgz#a179a795244c7b68684af6a632f1ad579e6a69e0"
-  integrity sha512-lyN4SjBzpoW4+v3ebT7JUtpzf9XyzrFwXIFv+E8ZblvMa5enSNaUBs4EPkL8gGA/GDMLngEmB53o5LaNboAPfg==
+swr@^1.0.0-beta.8:
+  version "1.0.0-beta.8"
+  resolved "https://registry.yarnpkg.com/swr/-/swr-1.0.0-beta.8.tgz#a187cfb5fbc9817f58a3b905f40bcff6152a8c28"
+  integrity sha512-OoSuJ7UomJW9/zcSmrXSYjSOzmevSPCTfgw52xS17DxPNpOp5StiqotGZK+NP5QWGKr+10TKodlC0aADb0KuGw==
   dependencies:
     dequal "2.0.2"
 
