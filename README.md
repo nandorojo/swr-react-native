@@ -48,6 +48,20 @@ expo install @react-native-community/netinfo
 yarn add @react-native-community/netinfo
 ```
 
+### Usage with SWR v1
+
+Currently, SWR v1 is in `beta`:
+
+```sh
+yarn add swr@beta
+```
+
+To use `swr-react-native`, you can install with `@beta` too:
+
+```sh
+yarn add swr-react-native@beta
+```
+
 ## Usage
 
 There are 2 ways to use this library:

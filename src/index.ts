@@ -1,4 +1,4 @@
-import useSWR, { SWRResponse, SWRConfiguration, Key } from 'swr'
+import useSWR, { SWRResponse, SWRConfiguration, Key,   } from 'swr'
 import { useRef, useEffect } from 'react'
 import { AppState, Platform } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
@@ -125,12 +125,13 @@ export function useSWRNativeRevalidate<Data = any, Error = any>(
 
 type Fetcher<Data> = ((...args: any) => Data | Promise<Data>) | null
 
-export default function useSWRNative<Data = any, Error = any>(
+
+const useSWRNative = <Data = any, Error = any>(
   key: Key,
-  fn?: Fetcher<Data>,
+  fn: Fetcher<Data> = null,
   config?: SWRConfiguration<Data, Error>
-) {
-  const swr = useSWR(key, fn, config)
+) => {
+  const swr = useSWR<Data, Error>(key, fn, config)
 
   useSWRNativeRevalidate({
     mutate: swr.mutate,
@@ -141,3 +142,5 @@ export default function useSWRNative<Data = any, Error = any>(
 
   return swr
 }
+
+export default useSWRNative
