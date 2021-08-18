@@ -7,7 +7,7 @@ import type { NetInfoState } from '@react-native-community/netinfo'
 
 type Props<Data, Error> = {
   /**
-   * Required: pass the `revalidate` function returned to you by SWR.
+   * Required: pass the `mutate` function returned to you by SWR.
    */
   mutate: SWRResponse<Data, Error>['mutate']
 } & Pick<
