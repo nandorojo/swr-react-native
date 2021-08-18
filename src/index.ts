@@ -127,7 +127,7 @@ type Fetcher<Data> = ((...args: any) => Data | Promise<Data>) | null
 
 export default function useSWRNative<Data = any, Error = any>(
   key: Key,
-  fn: Fetcher<Data>,
+  fn?: Fetcher<Data>,
   config?: SWRConfiguration<Data, Error>
 ) {
   const swr = useSWR(key, fn, config)
