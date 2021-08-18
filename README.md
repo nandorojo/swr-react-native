@@ -30,6 +30,7 @@ It comes with 2 hooks: `useSWRNative`, and `useSWRNativeRevalidate`.
 - Revalidates when `AppState` becomes `active`
 - Works with **React Navigation**, revalidating on screen `focus`
 - TypeScript support
+- `useSWRInfinite` support
 
 ## Installation
 
@@ -67,6 +68,8 @@ If, for some reason, you don't want to replace your imports, you can use the `us
 
 This option exists in case `useSWR` makes some big changes to their API or something down the line. Or, maybe you're using React Native web, and not all screens are nested in a React Navigation stack, so you want to call this only in those places.
 
+If you're using `useSWRInfinite`, then this is the method for you.
+
 ```ts
 import { useSWRNativeRevalidate } from '@nandorojo/swr-react-native'
 ```
@@ -76,7 +79,7 @@ Call `useSWRNativeRevalidate`, likely below your `useSWR` function:
 ```ts
 const { data, revalidate } = useSWR(key, fetcher)
 
-useSWRNative({
+useSWRNativeRevalidate({
   // required: pass your revalidate function returned by SWR
   revalidate
 
@@ -89,10 +92,19 @@ useSWRNative({
 
 The `revalidate` function is required!
 
-# Context
+If you're using `useSWRInfinite`, this you should rely on this usage:
 
-The idea for this library originated from [this issue](https://github.com/vercel/swr/issues/417).
+```ts
+const { data, revalidate } = useSWRInfinite(...)
+
+useSWRNativeRevalidate({
+  // required: pass your revalidate function returned by SWR
+  revalidate
+})
+```
+
+# Context
 
 I'm a big fan of SWR. I've also built a fetching library for Firebase/Firestore based on swr, which you can find [here](https://github.com/nandorojo/swr-firestore).
 
-It's still pretty new, and isn't super battle tested, so I'd appreciate help testing it.
+The idea for this library originated from [this issue](https://github.com/vercel/swr/issues/417). Thanks to [@te-online](https://github.com/te-online) for help testing it.
