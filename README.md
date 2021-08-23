@@ -59,7 +59,7 @@ yarn add swr@beta
 To use `swr-react-native`, you can install with `@beta` too:
 
 ```sh
-yarn add swr-react-native@beta
+yarn add @nandorojo/swr-react-native@beta
 ```
 
 ## Usage
