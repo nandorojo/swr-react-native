@@ -91,11 +91,11 @@ import { useSWRNativeRevalidate } from '@nandorojo/swr-react-native'
 Call `useSWRNativeRevalidate`, likely below your `useSWR` function:
 
 ```ts
-const { data, revalidate } = useSWR(key, fetcher)
+const { data, mutate } = useSWR(key, fetcher)
 
 useSWRNativeRevalidate({
-  // required: pass your revalidate function returned by SWR
-  revalidate
+  // required: pass your mutate function returned by SWR
+  mutate
 
   // optional, defaults copied from SWR
   revalidateOnFocus: true,
@@ -104,16 +104,16 @@ useSWRNativeRevalidate({
 })
 ```
 
-The `revalidate` function is required!
+The `mutate` function is required!
 
 If you're using `useSWRInfinite`, this you should rely on this usage:
 
 ```ts
-const { data, revalidate } = useSWRInfinite(...)
+const { data, mutate } = useSWRInfinite(...)
 
 useSWRNativeRevalidate({
-  // required: pass your revalidate function returned by SWR
-  revalidate
+  // required: pass your mutate function returned by SWR
+  mutate
 })
 ```
 
