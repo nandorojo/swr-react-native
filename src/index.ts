@@ -1,6 +1,6 @@
 import useSWR, { SWRResponse, SWRConfiguration, Key,   } from 'swr'
 import { useRef, useEffect } from 'react'
-import { AppState, Platform } from 'react-native'
+import { AppState, EventSubscription, Platform } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import type NetInfo from '@react-native-community/netinfo'
 import type { NetInfoState } from '@react-native-community/netinfo'
@@ -100,16 +100,19 @@ export function useSWRNativeRevalidate<Data = any, Error = any>(
     }
 
     let unsubscribeFocus: ReturnType<typeof addListener> | null = null
+    let appStateListener: EventSubscription | void
 
     if (revalidateOnFocus) {
       unsubscribeFocus = addListener('focus', onFocus)
-      AppState.addEventListener('change', onAppStateChange)
+      appStateListener = AppState.addEventListener('change', onAppStateChange)
     }
 
     return () => {
       if (revalidateOnFocus) {
         unsubscribeFocus?.()
-        AppState.removeEventListener('change', onAppStateChange)
+        if (appStateListener) {
+          appStateListener.remove()
+        }
       }
       if (revalidateOnReconnect) {
         unsubscribeReconnect?.()
