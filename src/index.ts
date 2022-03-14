@@ -1,4 +1,4 @@
-import useSWR, { SWRResponse, SWRConfiguration, Key,   } from 'swr'
+import useSWR, { SWRResponse, SWRConfiguration, Key } from 'swr'
 import { useRef, useEffect } from 'react'
 import { AppState, Platform } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
@@ -14,6 +14,10 @@ type Props<Data, Error> = {
   SWRConfiguration,
   'revalidateOnFocus' | 'revalidateOnReconnect' | 'focusThrottleInterval'
 >
+
+interface AppStateAddEventListenerReturn {
+  remove: () => void
+}
 
 /**
  * swr-react-native
@@ -100,16 +104,25 @@ export function useSWRNativeRevalidate<Data = any, Error = any>(
     }
 
     let unsubscribeFocus: ReturnType<typeof addListener> | null = null
+    let unsubscribeAppStateChange: AppStateAddEventListenerReturn | null | void = null
 
     if (revalidateOnFocus) {
       unsubscribeFocus = addListener('focus', onFocus)
-      AppState.addEventListener('change', onAppStateChange)
+      unsubscribeAppStateChange = AppState.addEventListener(
+        'change',
+        onAppStateChange
+      )
     }
 
     return () => {
       if (revalidateOnFocus) {
         unsubscribeFocus?.()
-        AppState.removeEventListener('change', onAppStateChange)
+
+        if (unsubscribeAppStateChange && unsubscribeAppStateChange?.remove) {
+          unsubscribeAppStateChange.remove?.()
+        } else {
+          AppState.removeEventListener('change', onAppStateChange)
+        }
       }
       if (revalidateOnReconnect) {
         unsubscribeReconnect?.()
@@ -124,7 +137,6 @@ export function useSWRNativeRevalidate<Data = any, Error = any>(
 }
 
 type Fetcher<Data> = ((...args: any) => Data | Promise<Data>) | null
-
 
 const useSWRNative = <Data = any, Error = any>(
   key: Key,
