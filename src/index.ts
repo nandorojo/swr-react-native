@@ -1,4 +1,4 @@
-import useSWR, { SWRResponse, SWRConfiguration, Key } from 'swr'
+import useSWR, { SWRResponse, SWRConfiguration, Key, Middleware } from 'swr'
 import { useRef, useEffect } from 'react'
 import { AppState, Platform } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
@@ -22,7 +22,44 @@ interface AppStateAddEventListenerReturn {
 /**
  * swr-react-native
  *
+ * This is the preferred way to configure swr for react-native.
+ * This supports refreshInterval options in nested screens.
+ *
+ */
+export const swrNativeMiddleware: Middleware = (useSWRNext) => {
+  return (key, fetcher, config) => {
+    const navigation = useNavigation()
+
+    const swr = useSWRNext(key, fetcher, {
+      ...config,
+      isPaused() {
+        const isPaused = config.isPaused?.() ?? false
+
+        // override only if isPaused
+        if (isPaused) {
+          return true
+        }
+
+        return !config.refreshWhenHidden && !navigation.isFocused()
+      },
+    })
+
+    useSWRNativeRevalidate({
+      mutate: swr.mutate,
+      revalidateOnFocus: config?.revalidateOnFocus,
+      revalidateOnReconnect: config?.revalidateOnReconnect,
+      focusThrottleInterval: config?.focusThrottleInterval,
+    })
+
+    return swr
+  }
+}
+
+/**
+ * swr-react-native
+ *
  * This helps you revalidate your SWR calls, based on navigation actions in `react-navigation`.
+ * This hook is not recommended to be used directly but is exported anyway for compatibility.
  */
 export function useSWRNativeRevalidate<Data = any, Error = any>(
   props: Props<Data, Error>
@@ -138,7 +175,7 @@ export function useSWRNativeRevalidate<Data = any, Error = any>(
 
 type Fetcher<Data> = ((...args: any) => Data | Promise<Data>) | null
 
-const useSWRNative = <Data = any, Error = any>(
+export const useSWRNative = <Data = any, Error = any>(
   key: Key,
   fn: Fetcher<Data> = null,
   config?: SWRConfiguration<Data, Error>
@@ -155,4 +192,9 @@ const useSWRNative = <Data = any, Error = any>(
   return swr
 }
 
+/**
+ * swr-react-native
+ *
+ * This hook is not recommended to be used any more but is exported anyway for compatibility.
+ */
 export default useSWRNative
