@@ -23,7 +23,7 @@ interface AppStateAddEventListenerReturn {
  * swr-react-native
  *
  * This is the preferred way to configure swr for react-native.
- * This supports refreshInterval options in nested screens.
+ * This supports avoiding unnecessary refreshes in nested screens when refreshInterval is set.
  *
  */
 export const swrNativeMiddleware: Middleware = (useSWRNext) => {
@@ -35,7 +35,7 @@ export const swrNativeMiddleware: Middleware = (useSWRNext) => {
       isPaused() {
         const isPaused = config.isPaused?.() ?? false
 
-        // override only if isPaused
+        // do not override if explicitly set to pause
         if (isPaused) {
           return true
         }
@@ -46,9 +46,9 @@ export const swrNativeMiddleware: Middleware = (useSWRNext) => {
 
     useSWRNativeRevalidate({
       mutate: swr.mutate,
-      revalidateOnFocus: config?.revalidateOnFocus,
-      revalidateOnReconnect: config?.revalidateOnReconnect,
-      focusThrottleInterval: config?.focusThrottleInterval,
+      revalidateOnFocus: config.revalidateOnFocus,
+      revalidateOnReconnect: config.revalidateOnReconnect,
+      focusThrottleInterval: config.focusThrottleInterval,
     })
 
     return swr
