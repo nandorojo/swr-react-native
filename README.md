@@ -29,7 +29,7 @@ This library provides a middleware `swrNativeMiddleware` for `useSWR`, which add
 ## Features
 
 - Adds support for `revalidateOnConnect` &amp; `revalidateOnFocus`.
-- Adds support for `refreshInterval`
+- Adds support for `refreshInterval` &amp; `refreshWhenHidden`.
 - Configurable `focusEventThrottle`
 - Web, iOS and Android support
 - Zero config
@@ -58,7 +58,7 @@ yarn add @react-native-community/netinfo
 
 V2 is now implemented as a swr middleware to support `refreshInterval` option ([details](https://github.com/nandorojo/swr-react-native/issues/22)).
 
-The migration to the new middleware API is pretty straightforward and is recommended. We still maintain backward-compatible APIs such as `useSWRNative` and `useSWRNativeRevalidate` for ease of migration, but those previous APIs do not support `refreshInterval` option and are discouraged.
+The migration to the new middleware API is pretty straightforward and is recommended. We still maintain backward-compatible APIs such as `useSWRNative` and `useSWRNativeRevalidate` for ease of migration, but those previous APIs do not support `refreshInterval` option and are not recommended.
 
 ### Usage with SWR v1
 
