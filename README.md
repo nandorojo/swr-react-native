@@ -1,5 +1,3 @@
-> Looking for a maintainer to help! I am no longer using SWR in favor of GraphQL/urql, so I have less time to dedicate to this. That said, it's a *super* minimal wrapper so it's still safe to use.
-
 # SWR + React Native 🐮
 
 Add React Native + React Navigation compatibility to [`swr`](https://swr.vercel.app). 👨🏻‍🔧
