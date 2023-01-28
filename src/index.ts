@@ -24,7 +24,7 @@ interface AppStateAddEventListenerReturn {
  *
  * This helps you revalidate your SWR calls, based on navigation actions in `react-navigation`.
  */
-export function useSWRNativeRevalidate<Data = any, Error = any>(
+export function useSWRNativeRevalidate<Data = unknown, Error = unknown>(
   props: Props<Data, Error>
 ) {
   const {
@@ -136,9 +136,9 @@ export function useSWRNativeRevalidate<Data = any, Error = any>(
   ])
 }
 
-type Fetcher<Data> = ((...args: any) => Data | Promise<Data>) | null
+type Fetcher<Data> = ((...args: unknown[]) => Data | Promise<Data>) | null
 
-const useSWRNative = <Data = any, Error = any>(
+const useSWRNative = <Data = unknown, Error = unknown>(
   key: Key,
   fn: Fetcher<Data> = null,
   config?: SWRConfiguration<Data, Error>
