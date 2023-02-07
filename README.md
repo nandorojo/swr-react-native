@@ -60,6 +60,8 @@ V2 is now implemented as a swr middleware to support `refreshInterval` option ([
 
 The migration to the new middleware API is pretty straightforward and is recommended. We still maintain backward-compatible APIs such as `useSWRNative` and `useSWRNativeRevalidate` for ease of migration, but those previous APIs do not support `refreshInterval` option and are not recommended.
 
+**If you plan to combine useSWRNative / useSWRNativeRevalidate and the new middleware instead of fully migrating to the new middleware API, you need to be aware of the potential double-calling issue. Please refer to [this comment](https://github.com/nandorojo/swr-react-native/pull/25#issuecomment-1420728115) for more information.**
+
 ### Usage with SWR v1
 
 ```sh
