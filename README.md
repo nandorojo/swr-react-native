@@ -2,12 +2,19 @@
 
 Add React Native + React Navigation compatibility to [`swr`](https://swr.vercel.app). 👨🏻‍🔧
 
-```diff
-- import useSWR from 'swr'
-+ import useSWRNative from '@nandorojo/swr-react-native'
-```
+```typescript
+import { swrNativeMiddleware } from '@nandorojo/swr-react-native'
 
-**That's it.**
+function App() {
+  return (
+    <SWRConfig value={{ use: [swrNativeMiddleware] }}>
+      {
+        // That's it!
+      }
+    </SWRConfig>
+  )
+}
+```
 
 SWR revalidation now works in your React Native app. Requests also revalidate when your React Navigation screens focus.
 
@@ -17,20 +24,19 @@ SWR revalidation now works in your React Native app. Requests also revalidate wh
 
 However, some of its essential features, such as `revalidateOnFocus` &amp; `revalidateOnConnect`, don't work on React Native.
 
-This library provides a simple drop-in replacement for `useSWR`, which adds compatibility for **React Native** / **React Navigation**.
-
-It comes with 2 hooks: `useSWRNative`, and `useSWRNativeRevalidate`.
+This library provides a middleware `swrNativeMiddleware` for `useSWR`, which adds compatibility for **React Native** / **React Navigation**.
 
 ## Features
 
 - Adds support for `revalidateOnConnect` &amp; `revalidateOnFocus`.
+- Adds support for `refreshInterval` &amp; `refreshWhenHidden`.
 - Configurable `focusEventThrottle`
 - Web, iOS and Android support
 - Zero config
 - Revalidates when `AppState` becomes `active`
 - Works with **React Navigation**, revalidating on screen `focus`
 - TypeScript support
-- `useSWRInfinite` support
+- `useSWRInfinite` &amp; and `useSWRImmutable` support
 
 ## Installation
 
@@ -48,72 +54,71 @@ expo install @react-native-community/netinfo
 yarn add @react-native-community/netinfo
 ```
 
+## Migration from swr-react-native v1
+
+V2 is now implemented as a swr middleware to support `refreshInterval` option ([details](https://github.com/nandorojo/swr-react-native/issues/22)).
+
+The migration to the new middleware API is pretty straightforward and is recommended. We still maintain backward-compatible APIs such as `useSWRNative` and `useSWRNativeRevalidate` for ease of migration, but those previous APIs do not support `refreshInterval` option and are not recommended.
+
+**If you plan to combine useSWRNative / useSWRNativeRevalidate and the new middleware instead of fully migrating to the new middleware API, you need to be aware of the potential double-calling issue. Please refer to [this comment](https://github.com/nandorojo/swr-react-native/pull/25#issuecomment-1420728115) for more information.**
+
 ### Usage with SWR v1
 
-Currently, SWR v1 is in `beta`:
-
 ```sh
-yarn add swr@beta
+yarn add swr
 ```
 
-To use `swr-react-native`, you can install with `@beta` too:
+To use `swr-react-native`, you can install with the following command:
 
 ```sh
-yarn add @nandorojo/swr-react-native@beta
+yarn add @nandorojo/swr-react-native
 ```
 
 ## Usage
 
 There are 2 ways to use this library:
 
-### 1. Simplest usage
+### 1. Global Configuration (Recommended)
 
-Replace imports of `useSWR` with `useSWRNative`. That's it!
+Add a SWRConfig Provider with the middleware at the top of the App. That's it!
 
-```ts
-import useSWRNative from '@nandorojo/swr-react-native'
+```tsx
+// in App.tsx
+import { swrNativeMiddleware } from '@nandorojo/swr-react-native'
 
-const { data, mutate, error } = useSWRNative(key, fetcher, config)
+function App() {
+  return <SWRConfig value={{ use: [swrNativeMiddleware] }}>
+    {...}
+  </SWRConfig>
+}
+
+// now anywhere inside App
+const { data, mutate, error } = useSWR(key, fetcher, config)
 ```
 
-### 2. Custom usage
+### 2. Per-Hook Usage
 
-If, for some reason, you don't want to replace your imports, you can use the `useSWRNativeRevalidate` hook. This allows you to de-couple the revalidation from the `useSWR` hook itself.
+If, for some reason, you don't want to set up this library globally, you can also use the `use` option in `useSWR`'s `config`
 
-This option exists in case `useSWR` makes some big changes to their API or something down the line. Or, maybe you're using React Native web, and not all screens are nested in a React Navigation stack, so you want to call this only in those places.
-
-If you're using `useSWRInfinite`, then this is the method for you.
+This option is useful if you're using React Native web, and not all screens are nested in a React Navigation stack, so you want to call this only in those places.
 
 ```ts
-import { useSWRNativeRevalidate } from '@nandorojo/swr-react-native'
+import { swrNativeMiddleware } from '@nandorojo/swr-react-native'
 ```
 
-Call `useSWRNativeRevalidate`, likely below your `useSWR` function:
+Use `swrNativeMiddleware`, in `useSWR` config:
 
 ```ts
-const { data, mutate } = useSWR(key, fetcher)
-
-useSWRNativeRevalidate({
-  // required: pass your mutate function returned by SWR
-  mutate
-
-  // optional, defaults copied from SWR
-  revalidateOnFocus: true,
-  revalidateOnReconnect: true,
-  focusThrottleInterval: 5000,
+const { data, mutate } = useSWR(key, fetcher, {
+  use: [swrNativeMiddleware],
 })
 ```
 
-The `mutate` function is required!
-
-If you're using `useSWRInfinite`, this you should rely on this usage:
+If you're using `useSWRInfinite`, you can use like this:
 
 ```ts
-const { data, mutate } = useSWRInfinite(...)
-
-useSWRNativeRevalidate({
-  // required: pass your mutate function returned by SWR
-  mutate
+const { data, mutate } = useSWRInfinite(getKey, fetcher, {
+  use: [swrNativeMiddleware],
 })
 ```
 
